@@ -63,7 +63,6 @@ func (b *Buffer) Publish(event *Event) {
 	for _, sub := range b.subscribers {
 		select {
 		case sub.Send <- event:
-		case <-b.ticker.C:
 		}
 	}
 }
@@ -88,6 +87,7 @@ func (b *Buffer) Start() {
 		case <-b.term:
 			log.Println("Received on term chan")
 			break
+		case <-b.ticker.C:
 		}
 	}
 }
